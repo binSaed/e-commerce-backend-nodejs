@@ -1,5 +1,5 @@
-const app = require("../../src/app");
-const User = require("../../src/models/user");
+const app = require("../../../src/app");
+const User = require("../../../src/models/user");
 const request = require("supertest");
 
 let userData = {

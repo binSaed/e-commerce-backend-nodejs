@@ -1,6 +1,6 @@
-const app = require("../../src/app");
-const User = require("../../src/models/user");
 const request = require("supertest");
+const app = require("../../../src/app");
+const User = require("../../../src/models/user");
 
 let userData = {
   email: "me@abdosaed.ml",
@@ -24,36 +24,30 @@ beforeAll(async () => {
   token = await user.generateJWT();
 });
 
-describe("updateProfile", () => {
-  test("should update the user with valid data", async () => {
-    const newName = "newname";
-    const newEmail = "newemail";
-    const newPhone = "newphone";
+describe("profile", () => {
+  test("should return user profile", async () => {
     const response = await request(app)
-      .put("/api/auth/updateProfile")
+      .post("/api/auth/profile")
       .set("Authorization", `Bearer ${token}`)
-      .field("name", newName)
-      .field("email", newEmail)
-      .field("phone", newPhone)
       .expect("Content-Type", /json/)
       .expect(200);
 
-    const { body } = response;
+    const body = response.body;
+
     expect(body.status).toBe(true);
 
-    const { user } = body;
-    expect(user.email).toEqual(newEmail);
-    expect(user.name).toEqual(newName);
-    expect(user.phone).toEqual(newPhone);
+    expect(userData.name).toBe(body.user.name);
+    expect(userData.email).toBe(body.user.email);
   });
-  test("should be fail update the user with wrong token", async () => {
+  test("should fail not valid token", async () => {
     const response = await request(app)
-      .put("/api/auth/updateProfile")
+      .post("/api/auth/profile")
       .set("Authorization", `Bearer ${wrongToken()}`)
       .expect("Content-Type", /json/)
       .expect(401);
 
     const { body } = response;
+
     expect(body.status).toBe(false);
   });
 });

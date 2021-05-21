@@ -15,8 +15,7 @@ router.post(
   isIntl("title"),
   isIntl("disc"),
   isIntl("unitName"),
-  //TODO price
-  // upload array image
+  //TODO price, upload array image
   addItem
 );
 

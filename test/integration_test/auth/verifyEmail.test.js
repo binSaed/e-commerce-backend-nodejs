@@ -1,8 +1,8 @@
 const request = require("supertest");
 const nodemailer = require("nodemailer");
-const app = require("../../src/app");
-const User = require("../../src/models/user");
-const emails = require("../../src/services/emails/emails");
+const app = require("../../../src/app");
+const User = require("../../../src/models/user");
+const emails = require("../../../src/services/emails/emails");
 
 let userData = {
   email: "me@abdosaed.ml",
