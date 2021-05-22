@@ -35,7 +35,7 @@
     "express-rate-limit": "^5.2.6",
     "express-validator": "^6.11.1",
     "helmet": "^4.6.0",
-    "imgur": "^1.0.2",
+    "imgur": "^0.3.2",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "mongoose": "^5.12.10",

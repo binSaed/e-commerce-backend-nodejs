@@ -19,16 +19,16 @@ function setupImgurStorage(opts = {}) {
         imgur
           ._imgurRequest("upload", data, {})
           .then((json) => {
-            const jsonData = json.data;
-            if (!(json.success && jsonData)) {
+            const jsonLink = json.link;
+            if (!(json && jsonLink)) {
               return cb(new Error("File is not uploaded"));
             }
 
-            const factor = jsonData.width / jsonData.height;
-           
+            const factor = json.width / json.height;
+
             encodeImageToBlurHash(data, factor)
               .then((imageHash) => {
-                cb(null, { ...jsonData, imageHash: imageHash ?? "" });
+                cb(null, { ...json, imageHash: imageHash ?? "" });
               })
               .catch(cb);
           })

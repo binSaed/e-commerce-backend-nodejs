@@ -1,3 +1,4 @@
+const CONSTANT = require("../../constants/constant");
 const _multer = require("multer");
 const acceptedMimetype = ["image/png", "image/jpeg", "image/jpg"];
 
@@ -13,4 +14,4 @@ const upload = _multer({
 });
 
 exports.single = upload.single("image");
-exports.array = upload.array("image", 4);
+exports.array = upload.array("image", CONSTANT.MAX_IMAGES_IN_ITEM);
