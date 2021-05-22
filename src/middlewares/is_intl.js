@@ -5,10 +5,15 @@ module.exports = (field) => {
     try {
       //in some time when i use form-data
       //fields come as String for this i need to parse it
-      const input =
-        typeof req.body[field] === "object"
-          ? req.body[field]
-          : JSON.parse(req.body[field]); //{ "en": "test", "ar": "تجربة" }
+
+      let input = {};
+      if (typeof req.body[field] === "object") {
+        input = req.body[field];
+      }
+      if (typeof req.body[field] === "string") {
+        input = JSON.parse(req.body[field]);
+      }
+      // input = { "en": "test", "ar": "تجربة" }
 
       req.body[field] = input;
       for (let i = 0; i < CONSTANT.LANGUAGES.length; i++) {
