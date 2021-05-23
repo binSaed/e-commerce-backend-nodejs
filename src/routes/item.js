@@ -11,11 +11,12 @@ const router = Router();
 router.post(
   "/add",
   checkPermissions("addItem"),
-  imageUploader.single,
+  imageUploader.array,
   isIntl("title"),
   isIntl("disc"),
   isIntl("unitName"),
-  //TODO price, upload array image
+  paramValidator.bodyPrice,
+  paramValidation,
   addItem
 );
 

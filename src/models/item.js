@@ -47,6 +47,7 @@ const itemSchema = new Schema(
         },
         maxQuantityInOrder: {
           type: Number,
+          default: null,
           // max Quantity user can add to Order
         },
       },

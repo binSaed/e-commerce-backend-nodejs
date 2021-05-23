@@ -1,6 +1,9 @@
 const { body, param, query, check } = require("express-validator");
 const isMongoId = require("../utils/is_mongo_id");
 const CONSTANT = require("../constants/constant");
+const bodyPrice = body("price")
+  .isInt({ gt: 0 })
+  .withMessage("must be a more than 0.");
 const bodyEmail = body("email")
   .trim()
   .isEmail()
@@ -59,6 +62,7 @@ const paramValidator = {
   bodyName,
   bodyFcmToken,
   bodyEmail,
+  bodyPrice,
   bodyPassword,
   bodyPhone,
   bodyUserType,
