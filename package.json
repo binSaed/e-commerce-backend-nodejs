@@ -12,6 +12,8 @@
     "url": "https://github.com/AbdOoSaed/e-commerce-backend-nodejs/issues"
   },
   "scripts": {
+    "start:pm2": "pm2 kill & pm2 start -i max src/index.js",
+    "stop:pm2": "pm2 kill",
     "start": "node src/index.js",
     "start:dev": "nodemon src/index.js",
     "test": "jest --watchAll --runInBand --verbose --coverage"
@@ -25,6 +27,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/express-status-monitor": "^1.2.3",
     "bcrypt": "^5.0.1",
     "blurhash": "^1.1.3",
     "compression": "^1.7.4",
@@ -33,8 +36,11 @@
     "express": "^4.17.1",
     "express-mongo-sanitize": "^2.1.0",
     "express-rate-limit": "^5.2.6",
+    "express-status-monitor": "^1.3.3",
     "express-validator": "^6.11.1",
     "helmet": "^4.6.0",
+    "http-auth": "^4.1.5",
+    "http-auth-connect": "^1.0.4",
     "imgur": "^0.3.2",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
@@ -48,7 +54,7 @@
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {
-    "@types/node": "^14.10.0",
+    "@types/node": "^15.6.0",
     "jest": "^26.4.2",
     "supertest": "^4.0.2"
   }

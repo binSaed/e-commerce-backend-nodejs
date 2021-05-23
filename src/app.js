@@ -9,7 +9,7 @@ app.use(routers);
 app.use(errorHandler);
 
 require("./db/mongoose_connect")()
-    .then((value) => console.log(value))
-    .catch((reason) => console.log(reason));
+  .then((value) => console.log(value))
+  .catch((reason) => console.log(reason));
 //connect to DB first then run the app
 module.exports = app;

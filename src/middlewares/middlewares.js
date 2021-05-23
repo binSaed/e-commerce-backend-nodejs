@@ -1,4 +1,7 @@
 const express = require("express");
+const auth = require("http-auth");
+const authConnect = require("http-auth-connect");
+const statusMonitor = require("express-status-monitor")({ path: "" });
 const path = require("path");
 const helmet = require("helmet");
 const morgan = require("morgan");
@@ -13,6 +16,17 @@ const requestIp = require("request-ip");
 
 module.exports = (app) => {
   app.set("trust proxy", 1);
+  app.use(statusMonitor.middleware);
+  app.get(
+    "/admin/statusMonitor",
+    authConnect(
+      auth.basic({}, (user, pass, callback) =>
+        //TODO make real auth
+        callback(user === "user" && pass === "pass")
+      )
+    ),
+    statusMonitor.pageRoute
+  );
   app.use(limiter);
   app.use(compression());
   app.use(mongoSanitize());
