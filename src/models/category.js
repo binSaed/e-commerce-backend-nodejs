@@ -5,6 +5,8 @@ const CONSTANT = require("../constants/constant");
 
 const mongooseIntl = require("mongoose-intl");
 
+// r we need to know who creates the category? it depends. HaHaHa
+// I need to stop over-engineering and end this project ASAP
 const categorySchema = new Schema(
   {
     name: {

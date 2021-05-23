@@ -1,6 +1,9 @@
 const CONSTANT = require("../constants/constant");
 const { Schema, Types, model } = require("mongoose");
 const mongooseIntl = require("mongoose-intl");
+
+//add a new field called deletedAt to make a soft delete
+
 const itemSchema = new Schema(
   {
     title: {
