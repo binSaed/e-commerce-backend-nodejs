@@ -26,7 +26,10 @@ exports.findByIdOrThrowIfUserNotExist = async ({ id }) => {
 };
 exports.creatCredentialsTO = async ({ to, userID, email }) => {
   const code = random6Digits();
-  const token = await jwtSign({ userID, email }, `${code}${to}`);
+  const token = await jwtSign({
+    payload: { userID, email },
+    additionalSecret: `${code}${to}`,
+  });
 
   return { token, code };
 };

@@ -1,10 +1,14 @@
 const jwt = require("jsonwebtoken");
-exports.jwtSign = (payload = {}, additionalSecret = "") => {
+exports.jwtSign = ({
+  payload = {},
+  additionalSecret = "",
+  expiresIn = "30 days",
+}) => {
   return new Promise((resolve, reject) => {
     jwt.sign(
       payload,
       `${process.env.PRIVATE_SERVER_KEY}${additionalSecret}`,
-      { expiresIn: "30 days" },
+      { expiresIn: expiresIn },
       (err, token) => {
         if (err) {
           return reject(err);

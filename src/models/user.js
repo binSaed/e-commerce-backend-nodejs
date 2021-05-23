@@ -64,9 +64,11 @@ const UserSchema = new Schema(
 UserSchema.methods.generateJWT = function () {
   // add user ip in token
   return jwtSign({
-    _id: this._id.toString(),
-    email: this.email,
-    userType: this.userType,
+    payload: {
+      _id: this._id.toString(),
+      email: this.email,
+      userType: this.userType,
+    },
   });
 };
 
