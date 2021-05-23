@@ -16,7 +16,9 @@
     "stop:pm2": "pm2 kill",
     "start": "node src/index.js",
     "start:dev": "nodemon src/index.js",
-    "test": "jest --watchAll --runInBand --verbose --coverage"
+    "test": "jest --runInBand --verbose --forceExit",
+    "test:watch": "jest --watchAll --runInBand --verbose --forceExit",
+    "test:coverage": "jest --runInBand --coverage --forceExit"
   },
   "keywords": [
     "JS",
@@ -56,6 +58,6 @@
   "devDependencies": {
     "@types/node": "^15.6.0",
     "jest": "^26.4.2",
-    "supertest": "^4.0.2"
+    "supertest": "^6.1.3"
   }
 }

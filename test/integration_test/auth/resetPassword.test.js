@@ -3,6 +3,8 @@ const User = require("../../../src/models/user");
 const request = require("supertest");
 const emails = require("../../../src/services/emails/emails");
 
+const server = request(app);
+
 let userData = {
   email: "me@abdosaed.ml",
   password: "abdo1234",
@@ -28,7 +30,7 @@ beforeAll(async () => {
 describe("resetPassword", () => {
   test("should send resetPassword to email", async () => {
     emails.sendResetPassword = jest.fn();
-    const response = await request(app)
+    const response = await server
       .post("/api/auth/resetPassword")
       .send(userData)
       .expect("Content-Type", /json/)
@@ -43,7 +45,7 @@ describe("resetPassword", () => {
   test("should fail and not send resetPassword if email not found", async () => {
     userData.email = "notfound@gmail.com";
     emails.sendResetPassword = jest.fn();
-    const response = await request(app)
+    const response = await server
       .post("/api/auth/resetPassword")
       .send(userData)
       .expect("Content-Type", /json/)
@@ -59,13 +61,11 @@ describe("resetPassword", () => {
 describe("verifyResetPassword", () => {
   test("should get user token if resetPasswordToken is valid", async () => {
     emails.sendResetPassword = jest.fn();
-    await request(app).post("/api/auth/resetPassword").send(userData);
-    const {
-      resetPasswordToken,
-      code,
-    } = emails.sendResetPassword.mock.calls[0][0];
+    await server.post("/api/auth/resetPassword").send(userData);
+    const { resetPasswordToken, code } =
+      emails.sendResetPassword.mock.calls[0][0];
 
-    const response = await request(app)
+    const response = await server
       .get(
         `/api/auth/verifyResetPassword?resetPasswordToken=${resetPasswordToken}&code=${code}`
       )
@@ -79,13 +79,11 @@ describe("verifyResetPassword", () => {
   test("should fail with wrong email", async () => {});
   test("should fail with wrong token and code", async () => {
     emails.sendResetPassword = jest.fn();
-    await request(app).post("/api/auth/resetPassword").send(userData);
-    const {
-      resetPasswordToken,
-      code,
-    } = emails.sendResetPassword.mock.calls[0][0];
+    await server.post("/api/auth/resetPassword").send(userData);
+    const { resetPasswordToken, code } =
+      emails.sendResetPassword.mock.calls[0][0];
 
-    const response = await request(app)
+    const response = await server
       .get(
         `/api/auth/verifyResetPassword?resetPasswordToken=${resetPasswordToken.replace(
           "a",

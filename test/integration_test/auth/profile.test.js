@@ -2,6 +2,8 @@ const request = require("supertest");
 const app = require("../../../src/app");
 const User = require("../../../src/models/user");
 
+const server = request(app);
+
 let userData = {
   email: "me@abdosaed.ml",
   password: "abdo1234",
@@ -26,7 +28,7 @@ beforeAll(async () => {
 
 describe("profile", () => {
   test("should return user profile", async () => {
-    const response = await request(app)
+    const response = await server
       .post("/api/auth/profile")
       .set("Authorization", `Bearer ${token}`)
       .expect("Content-Type", /json/)
@@ -39,12 +41,13 @@ describe("profile", () => {
     expect(userData.name).toBe(body.user.name);
     expect(userData.email).toBe(body.user.email);
   });
-  test("should fail not valid token", async () => {
-    const response = await request(app)
+  test("should fail not valid token", async (done) => {
+    const response = await server
       .post("/api/auth/profile")
       .set("Authorization", `Bearer ${wrongToken()}`)
       .expect("Content-Type", /json/)
       .expect(401);
+    done();
 
     const { body } = response;
 

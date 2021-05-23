@@ -2,6 +2,8 @@ const app = require("../../../src/app");
 const User = require("../../../src/models/user");
 const request = require("supertest");
 
+const server = request(app);
+
 let userData = {
   email: "me@abdosaed.ml",
   password: "abdo1234",
@@ -29,7 +31,7 @@ describe("updateProfile", () => {
     const newName = "newname";
     const newEmail = "newemail";
     const newPhone = "newphone";
-    const response = await request(app)
+    const response = await server
       .put("/api/auth/updateProfile")
       .set("Authorization", `Bearer ${token}`)
       .field("name", newName)
@@ -47,7 +49,7 @@ describe("updateProfile", () => {
     expect(user.phone).toEqual(newPhone);
   });
   test("should be fail update the user with wrong token", async () => {
-    const response = await request(app)
+    const response = await server
       .put("/api/auth/updateProfile")
       .set("Authorization", `Bearer ${wrongToken()}`)
       .expect("Content-Type", /json/)

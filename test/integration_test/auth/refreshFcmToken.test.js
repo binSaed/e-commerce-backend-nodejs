@@ -2,6 +2,8 @@ const request = require("supertest");
 const app = require("../../../src/app");
 const User = require("../../../src/models/user");
 
+const server = request(app);
+
 let userData = {
   email: "me@abdosaed.ml",
   password: "abdo1234",
@@ -18,7 +20,7 @@ beforeAll(async () => {
 
 describe("refreshFcmToken", () => {
   test("should fail not valid token", async () => {
-    const response = await request(app)
+    const response = await server
       .post("/api/auth/refreshFcmToken")
       .set("Authorization", `Bearer ${wrongToken()}`)
       .expect("Content-Type", /json/)
@@ -30,7 +32,7 @@ describe("refreshFcmToken", () => {
   });
 
   test("should success valid fcmToken", async () => {
-    const response = await request(app)
+    const response = await server
       .post("/api/auth/refreshFcmToken")
       .send({ fcmToken: "fcmToken1234" })
       .set("Authorization", `Bearer ${token}`)
@@ -44,7 +46,7 @@ describe("refreshFcmToken", () => {
 
   test("should fail not valid fcmToken", async () => {
     //valid fcmToken Length up to 8
-    const response = await request(app)
+    const response = await server
       .post("/api/auth/refreshFcmToken")
       .set("Authorization", `Bearer ${token}`)
       .expect("Content-Type", /json/)

@@ -2,6 +2,8 @@ const request = require("supertest");
 const app = require("../../../src/app");
 const User = require("../../../src/models/user");
 
+const server = request(app);
+
 let userData = {
   email: "me@abdosaed.ml",
   password: "abdo1234",
@@ -22,7 +24,7 @@ beforeAll(async () => {
 });
 describe("login", () => {
   test("login should be fail when body not send", async () => {
-    const response = await request(app)
+    const response = await server
       .post("/api/auth/login")
       .expect("Content-Type", /json/)
       .expect(422);
@@ -32,7 +34,7 @@ describe("login", () => {
   test("login should be fail when body with not valid pram", async () => {
     userData.email = "abdo.ml";
     userData.password = "1234";
-    const response = await request(app)
+    const response = await server
       .post("/api/auth/login")
       .send(userData)
       .expect("Content-Type", /json/)
@@ -47,7 +49,7 @@ describe("login", () => {
   });
   test("login should be fail when email not found", async () => {
     userData.email = "wrongEmail";
-    const response = await request(app)
+    const response = await server
       .post("/api/auth/login")
       .send(userData)
       .expect("Content-Type", /json/)
@@ -59,7 +61,7 @@ describe("login", () => {
   });
   test("login should be fail when wrong password", async () => {
     userData.password = "wrongPassword";
-    const response = await request(app)
+    const response = await server
       .post("/api/auth/login")
       .send(userData)
       .expect("Content-Type", /json/)
@@ -70,7 +72,7 @@ describe("login", () => {
     expect(body.status).toBe(false);
   });
   test("should login", async () => {
-    const response = await request(app)
+    const response = await server
       .post("/api/auth/login")
       .send(userData)
       .expect("Content-Type", /json/)
@@ -88,7 +90,7 @@ describe("login", () => {
   test("should save fcmToken when login", async () => {
     const user = { ...userData, fcmToken: "token" };
 
-    const response = await request(app)
+    const response = await server
       .post("/api/auth/login")
       .send(user)
       .expect("Content-Type", /json/)
@@ -107,8 +109,8 @@ describe("login", () => {
   });
   test("should save fcmToken when login without duplicate", async () => {
     const user = { ...userData, fcmToken: "token" };
-    await request(app).post("/api/auth/login").send(user);
-    const response = await request(app)
+    await server.post("/api/auth/login").send(user);
+    const response = await server
       .post("/api/auth/login")
       .send(user)
       .expect("Content-Type", /json/)

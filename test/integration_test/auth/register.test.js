@@ -2,6 +2,8 @@ const app = require("../../../src/app");
 const User = require("../../../src/models/user");
 const request = require("supertest");
 
+const server = request(app);
+
 let userData = {
   email: "me@abdosaed.ml",
   password: "abdo1234",
@@ -25,7 +27,7 @@ afterEach(async () => {
 
 describe("register", () => {
   test("should fail register when body not send", async () => {
-    const response = await request(app)
+    const response = await server
       .post("/api/auth/register")
       .expect("Content-Type", /json/)
 
@@ -45,7 +47,7 @@ describe("register", () => {
     userData.email = "abdo.ml";
     userData.password = "1234";
     userData.name = "al";
-    const response = await request(app)
+    const response = await server
       .post("/api/auth/register")
       .send(userData)
       .expect("Content-Type", /json/)
@@ -73,7 +75,7 @@ describe("register", () => {
     expect(passwordNotValid).toBe(true);
   });
   test("should register new user", async () => {
-    const response = await request(app)
+    const response = await server
       .post("/api/auth/register")
       .send(userData)
       .expect("Content-Type", /json/)
@@ -88,8 +90,8 @@ describe("register", () => {
     expect(body.token.toString().split(".").length).toBe(3);
   });
   test("should fail register when email used before", async () => {
-    await request(app).post("/api/auth/register").send(userData);
-    const response = await request(app)
+    await server.post("/api/auth/register").send(userData);
+    const response = await server
       .post("/api/auth/register")
       .send(userData)
       .expect("Content-Type", /json/)
@@ -108,7 +110,7 @@ describe("register", () => {
   });
   test("should not save fcmToken if it empty", async () => {
     const user = { ...userData };
-    const response = await request(app)
+    const response = await server
       .post("/api/auth/register")
       .send(user)
       .expect("Content-Type", /json/)
@@ -122,7 +124,7 @@ describe("register", () => {
   });
   test("should save fcmToken if it not empty", async () => {
     const user = { ...userData, fcmToken: "token" };
-    const response = await request(app)
+    const response = await server
       .post("/api/auth/register")
       .send(user)
       .expect("Content-Type", /json/)

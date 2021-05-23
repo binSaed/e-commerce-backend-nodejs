@@ -4,6 +4,8 @@ const app = require("../../../src/app");
 const User = require("../../../src/models/user");
 const emails = require("../../../src/services/emails/emails");
 
+const server = request(app);
+
 let userData = {
   email: "me@abdosaed.ml",
   password: "abdo1234",
@@ -31,7 +33,7 @@ describe("reSendConfirmEmail", () => {
   test("should send email", async () => {
     const sendMail = jest.fn().mockResolvedValue("done");
     nodemailer.createTransport = jest.fn().mockReturnValue({ sendMail });
-    const response = await request(app)
+    const response = await server
       .post("/api/auth/reSendConfirmEmail")
       .set("Authorization", `Bearer ${token}`)
       .expect("Content-Type", /json/)
@@ -44,7 +46,7 @@ describe("reSendConfirmEmail", () => {
   });
   test("should fail to send email not valid token", async () => {
     nodemailer.createTransport = jest.fn();
-    const response = await request(app)
+    const response = await server
       .post("/api/auth/reSendConfirmEmail")
       .set("Authorization", `Bearer ${wrongToken}`)
       .expect("Content-Type", /json/)
@@ -59,15 +61,13 @@ describe("reSendConfirmEmail", () => {
 describe("verifyEmail", () => {
   test("should set emailVerified to true", async () => {
     emails.sendConfirmEmail = jest.fn();
-    await request(app)
+    await server
       .post("/api/auth/reSendConfirmEmail")
       .set("Authorization", `Bearer ${token}`);
-    const {
-      confirmEmailToken,
-      code,
-    } = emails.sendConfirmEmail.mock.calls[0][0];
+    const { confirmEmailToken, code } =
+      emails.sendConfirmEmail.mock.calls[0][0];
 
-    const response = await request(app)
+    const response = await server
       .get(
         `/api/auth/verifyEmail?confirmEmailToken=${confirmEmailToken}&code=${code}`
       )
@@ -80,7 +80,7 @@ describe("verifyEmail", () => {
   });
   test("should fail with wrong token", async () => {
     emails.sendConfirmEmail = jest.fn();
-    await request(app)
+    await server
       .post("/api/auth/reSendConfirmEmail")
       .set("Authorization", `Bearer ${wrongToken()}`)
       .expect(401);
