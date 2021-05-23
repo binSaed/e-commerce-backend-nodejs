@@ -57,6 +57,9 @@ const queryResetPasswordToken = query("resetPasswordToken")
   .isJWT()
   .withMessage(`is not valid`);
 const paramId = param("id").trim().custom(isMongoId);
+const paramMongoId = (fieldName) => param(fieldName).trim().custom(isMongoId);
+const bodyMongoId = (fieldName) => body(fieldName).trim().custom(isMongoId);
+const queryMongoId = (fieldName) => query(fieldName).trim().custom(isMongoId);
 
 const paramValidator = {
   bodyName,
@@ -70,6 +73,9 @@ const paramValidator = {
   queryToken,
   queryConfirmEmailToken,
   paramId,
+  paramMongoId,
   queryResetPasswordToken,
+  bodyMongoId,
+  queryMongoId,
 };
 module.exports = paramValidator;

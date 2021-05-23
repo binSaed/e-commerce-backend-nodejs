@@ -2,6 +2,8 @@ const _ = require("lodash");
 const Category = require("../../models/category");
 const Image = require("../../models/image");
 const { deleteImageById } = require("../../utils/image_util");
+const { addItemToCategory } = require("../utils");
+const errorThrower = require("../../utils/error_thrower");
 
 exports.getCategories = async (req, res, next) => {
   try {
@@ -35,6 +37,18 @@ exports.addCategory = async (req, res, next) => {
     return res.jsonSuccess();
   } catch (e) {
     deleteImageById({ id: imageId });
+    next(e);
+  }
+};
+
+exports.addItemToCategory = async (req, res, next) => {
+  try {
+    const { categoryId } = req.params;
+    const { itemId } = req.body;
+    const isAdded = await addItemToCategory({ categoryId, itemID: itemId });
+    if (isAdded) return res.jsonSuccess();
+    return errorThrower("Category not found", 404);
+  } catch (e) {
     next(e);
   }
 };

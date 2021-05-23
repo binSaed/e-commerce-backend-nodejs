@@ -9,6 +9,7 @@ module.exports = Object.freeze({
   PERMISSIONS: {
     addCategory: ["moderator", "admin", "owner"],
     addItem: ["moderator", "admin", "owner"],
+    addItemToCategory: ["moderator", "admin", "owner"],
   },
   PHONE_LOCAL: ["ar-EG", "ar-SA"],
   LANGUAGES: ["en", "ar"],

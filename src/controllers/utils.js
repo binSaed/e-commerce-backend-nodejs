@@ -6,11 +6,17 @@ const { jwtSign, jwtVerify } = require("../utils/jwt_promise");
 const errorThrower = require("../utils/error_thrower");
 
 exports.addItemToCategory = async ({ categoryId, itemID }) => {
-  if (!categoryId || !itemID) return;
+  if (!categoryId || !itemID) return false;
 
   const category = await Category.findById(categoryId);
-  if (category) {
-    category.items.push(itemID);
-    category.save();
-  }
+  if (!category) return false;
+
+  // I am not sure we need validation for itemId
+  // to be sure the item exists or not, for now
+  // I insert itemId without validation
+  //if u read this comment let me know ur opinion, Good Day
+
+  category.items.push(itemID);
+  category.save();
+  return true;
 };

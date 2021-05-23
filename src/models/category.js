@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema, Types, model } = require("mongoose");
-
+const _ = require("lodash");
 const CONSTANT = require("../constants/constant");
 
 const mongooseIntl = require("mongoose-intl");
@@ -42,5 +42,13 @@ const categorySchema = new Schema(
 categorySchema.plugin(mongooseIntl, {
   languages: CONSTANT.LANGUAGES,
   defaultLanguage: CONSTANT.DEFAULT_LANGUAGE,
+});
+categorySchema.pre("save", async function (next) {
+  const category = this;
+  // i used uniqBy instead of uniq
+  // because ObjectId("foo") == ObjectId("foo"); => false
+  //the solve for this problem is to convert to string
+  category.items = _.uniqBy(category.items, (id) => id.toString());
+  next();
 });
 module.exports = mongoose.model("Category", categorySchema);
