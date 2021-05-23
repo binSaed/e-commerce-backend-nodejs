@@ -18,6 +18,7 @@ router.post(
   checkPermissions("addCategory"),
   imageUploader.single,
   isIntl("name"),
+  paramValidation,
   addCategory
 );
 //add an item to an existing category
