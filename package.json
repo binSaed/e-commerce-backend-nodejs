@@ -46,7 +46,7 @@
     "imgur": "^0.3.2",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
-    "mongoose": "^5.12.10",
+    "mongoose": "^5.12.11",
     "mongoose-intl": "^3.2.0",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",

@@ -10,7 +10,7 @@ beforeEach(async () => {
   await Category.deleteMany();
   await Item.deleteMany();
 });
-beforeAll(async () => {});
+afterAll(async () => jest.resetAllMocks());
 
 describe("addItemToCategory", () => {
   test("should not add item to category when token expired (Unauthorized)", async () => {
