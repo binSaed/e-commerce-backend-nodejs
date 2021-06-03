@@ -18,12 +18,10 @@ module.exports = (field) => {
       req.body[field] = input;
       for (let i = 0; i < CONSTANT.LANGUAGES.length; i++) {
         if (!input[CONSTANT.LANGUAGES[i]]) {
-          errorThrower(
-            `one of needed ${field} languages not found=> ${CONSTANT.LANGUAGES}`,
+          return errorThrower(
+            `one of ${field} languages not found=>'${CONSTANT.LANGUAGES[i]}' you must send [${CONSTANT.LANGUAGES}]`,
             422
           );
-
-          return;
         }
       }
       next();
