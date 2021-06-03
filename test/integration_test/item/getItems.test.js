@@ -65,7 +65,7 @@ describe("getItems", () => {
       .expect(200);
 
     const { body } = response;
-    console.log(body);
+
     expect(body.status).toBe(true);
     expect(body.items).toBeInstanceOf(Array);
     expect(body.items.length).toBe(1);
@@ -83,7 +83,7 @@ describe("getItems", () => {
       .expect(200);
 
     const { body } = response;
-    console.log(body);
+
     expect(body.status).toBe(true);
     expect(body.items).toBeInstanceOf(Array);
     expect(body.items.length).toBe(0);

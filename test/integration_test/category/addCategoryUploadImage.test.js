@@ -12,7 +12,6 @@ jest.mock("multer", () => () => {
         req.body = {
           name: { en: "categoryName", ar: "categoryName" },
         };
-        console.log("mockImplementation2", req.body);
         req.file = {
           imageHash: "sample.name",
           link: "sample.type",
@@ -51,7 +50,7 @@ describe("addCategoryUploadImage", () => {
       .expect(200);
 
     const body = response.body;
-    console.log(body);
+
     expect(body.status).toBeTruthy();
   });
 
