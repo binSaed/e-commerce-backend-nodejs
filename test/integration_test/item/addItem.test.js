@@ -92,6 +92,35 @@ describe("addCategory", () => {
     ).toBeTruthy();
     expect(item.price).toEqual(items[0].units[0].price);
   });
+  test("should create item and add to category when user has access", async () => {
+    const category = new Category({
+      name: { en: "categoryName", ar: "categoryName" },
+    });
+    await category.save();
+    const categoryId = category._id;
+
+    const response = await server
+      .post(`/api/items/add`)
+      .send({ ...item, categoryId })
+      .set("Authorization", `Bearer ${await TokenUtils.ownerUserToken()}`)
+      .expect("Content-Type", /json/)
+      .expect(200);
+    const body = response.body;
+
+    expect(body.status).toBeTruthy();
+
+    const items = await Item.find();
+    const itemDB = items[0];
+    expect(JSON.stringify(item.title).includes(itemDB.title)).toBeTruthy();
+    expect(JSON.stringify(item.disc).includes(itemDB.disc)).toBeTruthy();
+    expect(
+      JSON.stringify(item.unitName).includes(itemDB.units[0].name)
+    ).toBeTruthy();
+    expect(item.price).toEqual(itemDB.units[0].price);
+
+    const category2 = await Category.findById(categoryId);
+    expect(category2.items[0]).toEqual(itemDB._id);
+  });
   test("should not create item when token expired (Unauthorized)", async () => {
     const response = await server
       .post(`/api/items/add`)
