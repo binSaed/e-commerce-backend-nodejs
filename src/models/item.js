@@ -48,6 +48,11 @@ const itemSchema = new Schema(
           required: false,
           default: 0,
         },
+        minQuantityInOrder: {
+          type: Number,
+          default: 1,
+          // min Quantity user can Order
+        },
         maxQuantityInOrder: {
           type: Number,
           default: null,
