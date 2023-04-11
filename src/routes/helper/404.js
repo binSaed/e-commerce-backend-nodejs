@@ -1,6 +1,9 @@
 const notFound = (__, res) => {
-	return res.status(404).jsonFail({
-		message: "api not found",
-	});
+  return res.jsonFail(
+    {
+      message: "api not found",
+    },
+    404
+  );
 };
 module.exports = notFound;
